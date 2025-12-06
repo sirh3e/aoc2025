@@ -41,24 +41,21 @@ struct Vm {
 
 impl Vm {
     fn execute(&mut self) {
-        match self.instructions.get(self.instruction_pointer) {
-            Some(instruction) => {
-                let rotation = match instruction {
-                    &Instruction::Left(amount) => self.state.dial.left(amount),
-                    &Instruction::Right(amount) => self.state.dial.right(amount),
-                };
-                self.state.dial = Dial::new(rotation.position, self.state.dial.max);
+        if let Some(instruction) = self.instructions.get(self.instruction_pointer) {
+            let rotation = match *instruction {
+                Instruction::Left(amount) => self.state.dial.left(amount),
+                Instruction::Right(amount) => self.state.dial.right(amount),
+            };
+            self.state.dial = Dial::new(rotation.position, self.state.dial.max);
 
-                for (part, handler) in &self.state.handlers {
-                    self.state.results.entry(part.clone()).or_default();
-                    self.state
-                        .results
-                        .insert(part.clone(), handler(&rotation, self.state.results[part]));
-                }
-
-                self.instruction_pointer += 1;
+            for (part, handler) in &self.state.handlers {
+                self.state.results.entry(*part).or_default();
+                self.state
+                    .results
+                    .insert(*part, handler(&rotation, self.state.results[part]));
             }
-            _ => {}
+
+            self.instruction_pointer += 1;
         }
     }
 
@@ -111,12 +108,12 @@ fn main() -> anyhow::Result<()> {
             results: Default::default(),
         };
 
-        let vm = Vm {
+        
+        Vm {
             instructions,
             instruction_pointer: 0,
             state,
-        };
-        vm
+        }
     };
     vm.run();
 
