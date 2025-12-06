@@ -1,0 +1,11 @@
+[package]
+name = "aoc"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.100"
+
+[dev-dependencies]
+rstest = "0.26.1"
+similar-asserts = "1.7.0"
