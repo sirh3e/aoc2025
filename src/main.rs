@@ -70,7 +70,7 @@ impl Vm {
 }
 
 fn main() -> anyhow::Result<()> {
-    let text = std::fs::read_to_string("../data/day01.txt")?;
+    let text = std::fs::read_to_string("./data/day01.txt")?;
     let instructions = text
         .split("\r\n")
         .map(String::from)
