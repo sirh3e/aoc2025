@@ -108,7 +108,6 @@ fn main() -> anyhow::Result<()> {
             results: Default::default(),
         };
 
-        
         Vm {
             instructions,
             instruction_pointer: 0,
